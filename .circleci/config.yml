@@ -1,11 +1,5 @@
 version: 2.1
 
-orbs:
-  # The python orb contains a set of prepackaged CircleCI configuration you can use repeatedly in your configuration files
-  # Orb commands and jobs help you with common scripting around a language/tool
-  # so you dont have to copy and paste it everywhere.
-  # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/python
-  python: circleci/python@3.6
 
 workflows:
   sample:  # This is the name of the workflow, feel free to change it to better match your workflow.
@@ -31,14 +25,15 @@ jobs:
     # CircleCI will report the results back to your VCS provider.
     steps:
       - checkout
-      - python/install-packages:
-          pkg-manager: pip
           # app-dir: ~/project/package-directory/  # If you're requirements.txt isn't in the root directory.
           # pip-dependency-file: test-requirements.txt  # if you have a different name for your requirements file, maybe one that combines your runtime and test requirements.
       - run:
           name: run pulumi
           # This assumes pytest is installed via the install-package step above
           command: |
+            sudo apt-get update
+            sudo apt-get install -y python3 python3-pip
+            pip3 install -r requirements.txt
             curl -fsSL https://get.pulumi.com/ | sh
             export PATH=$PATH:$HOME/.pulumi/bin
             pulumi login --non-interactive
