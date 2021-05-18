@@ -15,3 +15,4 @@ buckobj = s3.BucketObject(
 
 # Export the name of the bucket
 pulumi.export('bucket_name', bucket.id)
+
